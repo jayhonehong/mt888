@@ -1,0 +1,82 @@
+# GoldBean Arena :: architecture
+# Render with:  manus-render-diagram docs/architecture.d2 docs/architecture.png
+
+title: "GoldBean Arena — architecture"
+
+direction: right
+
+browser: Browser {
+  style.fill: "#0B1020"
+  style.stroke: "#2A3554"
+  style.font-color: "#E6EDF7"
+
+  ui: "React 18 + TypeScript\nTailwind v4\nVite build" {
+    style.fill: "#101728"
+    style.stroke: "#3A4770"
+    style.font-color: "#E6EDF7"
+  }
+
+  contexts: "State providers" {
+    style.fill: "#101728"
+    style.stroke: "#3A4770"
+    style.font-color: "#E6EDF7"
+    auth: "AuthContext\nsession · balance"
+    live: "LiveContext\nmerges WS patches"
+    slip: "BetSlipContext\nlocalStorage slip"
+    toast: "ToastContext\nsettlements"
+  }
+}
+
+server: "Node 22 · Express 4 · ws\none process, one port" {
+  style.fill: "#0B1020"
+  style.stroke: "#FFC53D"
+  style.font-color: "#E6EDF7"
+
+  routes: "routes.js\nREST + validation"
+  auth: "auth.js\nbcrypt · JWT · RBAC"
+  betting: "betting.js\nslips · settlement"
+  ledger: "ledger.js\nbalanced journals"
+  sim: "simulator.js\nclock · pricing · grading"
+  db: "db.js\ndriver + transactions"
+}
+
+store: "SQLite (WAL)" {
+  style.fill: "#101728"
+  style.stroke: "#3A4770"
+  style.font-color: "#E6EDF7"
+  identity: "users · accounts"
+  books: "journals · entries"
+  catalogue: "events · markets · selections\nprice_ticks"
+  wagers: "bets · bet_legs"
+}
+
+browser.ui -> server.routes: "REST /api/*" {
+  style.stroke: "#4EA8FF"
+  style.font-color: "#4EA8FF"
+}
+browser.ui -> server.sim: "WebSocket /ws" {
+  style.stroke: "#3DDC97"
+  style.font-color: "#3DDC97"
+}
+
+server.routes -> server.auth
+server.routes -> server.betting
+server.routes -> server.sim
+server.betting -> server.ledger
+server.sim -> server.betting: "settle on full time"
+server.sim -> server.db
+server.auth -> server.db
+server.betting -> server.db
+server.ledger -> server.db
+
+server.db -> store.identity
+server.db -> store.books
+server.db -> store.catalogue
+server.db -> store.wagers
+
+invariant: "Invariant, evaluated on every read:\nissued = wallets + escrow + rake" {
+  style.fill: "#151D33"
+  style.stroke: "#FFC53D"
+  style.font-color: "#FFD469"
+}
+server.ledger -> invariant

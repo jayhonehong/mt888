@@ -1,0 +1,9 @@
+node_modules/
+client/node_modules/
+client/dist/
+data/
+.env
+.env.local
+*.log
+.DS_Store
+__pycache__/

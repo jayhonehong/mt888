@@ -1,0 +1,17 @@
+{
+  "routes": [
+    { "path": "/", "title": "Aviator" },
+    { "path": "/board", "title": "Live Board" },
+    { "path": "/sports", "title": "All Sports" },
+    { "path": "/blackjack", "title": "Blackjack" },
+    { "path": "/event/:id", "title": "Fixture" },
+    { "path": "/my-bets", "title": "My Bets" },
+    { "path": "/wallet", "title": "Wallet & Ledger" },
+    { "path": "/friends", "title": "Friends" },
+    { "path": "/rewards", "title": "Rewards" },
+    { "path": "/leaderboard", "title": "Leaderboard" },
+    { "path": "/admin", "title": "Admin" },
+    { "path": "/login", "title": "Sign in" },
+    { "path": "/register", "title": "Create account" }
+  ]
+}

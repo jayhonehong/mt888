@@ -1,0 +1,34 @@
+{
+  "name": "goldbean-arena",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "GoldBean Arena - a play-money sportsbook simulator (fake currency only): React + Express + WebSockets + a double-entry ledger.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node --experimental-sqlite --no-warnings server/index.js",
+    "dev:server": "node --experimental-sqlite --no-warnings --watch server/index.js",
+    "dev:client": "npm --prefix client run dev",
+    "dev": "concurrently -n api,web -c yellow,cyan \"npm:dev:server\" \"npm:dev:client\"",
+    "build": "npm --prefix client run build",
+    "typecheck": "npm --prefix client run typecheck",
+    "seed": "node --experimental-sqlite --no-warnings server/reset.js",
+    "reset": "node --experimental-sqlite --no-warnings server/reset.js --force"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.22.0",
+    "jsonwebtoken": "^9.0.2",
+    "ws": "^8.18.0"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^13.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  }
+}
